@@ -2,11 +2,21 @@
 ; flat assembler interface for Linux
 ; Copyright (c) 1999-2022, Tomasz Grysztar.
 ; All rights reserved.
+format binary as 'bin'
+use32
 
-	format	ELF executable 3
-	entry	start
+if ~ defined BASE
+  BASE = 0xC0300040
+end if
 
-segment readable executable
+org BASE
+
+keros_entry:
+	cld
+	mov	[saved_esp],esp
+	mov	eax,[esp+4]
+	mov	[kapi_ptr],eax
+	jmp	start
 
 start:
 
@@ -14,10 +24,9 @@ start:
 	mov	esi,_logo
 	call	display_string
 
-	mov	[command_line],esp
-	mov	ecx,[esp]
-	lea	ebx,[esp+4+ecx*4+4]
-	mov	[environment],ebx
+	call	build_argv
+	mov	[command_line],argv_block
+	mov	[environment],env_block
 	call	get_params
 	jc	information
 
@@ -34,17 +43,7 @@ start:
 	mov	esi,_memory_suffix
 	call	display_string
 
-	mov	eax,78
-	mov	ebx,buffer
-	xor	ecx,ecx
-	int	0x80
-	mov	eax,dword [buffer]
-	mov	ecx,1000
-	mul	ecx
-	mov	ebx,eax
-	mov	eax,dword [buffer+4]
-	div	ecx
-	add	eax,ebx
+	call	keros_time_ms
 	mov	[start_time],eax
 
 	and	[preprocessing_done],0
@@ -60,17 +59,7 @@ start:
 	call	display_number
 	mov	esi,_passes_suffix
 	call	display_string
-	mov	eax,78
-	mov	ebx,buffer
-	xor	ecx,ecx
-	int	0x80
-	mov	eax,dword [buffer]
-	mov	ecx,1000
-	mul	ecx
-	mov	ebx,eax
-	mov	eax,dword [buffer+4]
-	div	ecx
-	add	eax,ebx
+	call	keros_time_ms
 	sub	eax,[start_time]
 	jnc	time_ok
 	add	eax,3600000
@@ -284,9 +273,9 @@ get_params:
 	clc
 	ret
 
-include 'system.inc'
+include 'system_keros.inc'
 
-include '..\version.inc'
+include '../../fasm/VERSION.INC'
 
 _copyright db 'Copyright (c) 1999-2022, Tomasz Grysztar',0xA,0
 
@@ -305,25 +294,23 @@ _passes_suffix db ' passes, ',0
 _seconds_suffix db ' seconds, ',0
 _bytes_suffix db ' bytes.',0xA,0
 
-include '..\errors.inc'
-include '..\symbdump.inc'
-include '..\preproce.inc'
-include '..\parser.inc'
-include '..\exprpars.inc'
-include '..\assemble.inc'
-include '..\exprcalc.inc'
-include '..\formats.inc'
-include '..\x86_64.inc'
-include '..\avx.inc'
+include '../../fasm/ERRORS.INC'
+include '../../fasm/SYMBDUMP.INC'
+include '../../fasm/PREPROCE.INC'
+include '../../fasm/PARSER.INC'
+include '../../fasm/EXPRPARS.INC'
+include '../../fasm/ASSEMBLE.INC'
+include '../../fasm/EXPRCALC.INC'
+include '../../fasm/FORMATS.INC'
+include '../../fasm/X86_64.INC'
+include '../../fasm/AVX.INC'
 
-include '..\tables.inc'
-include '..\messages.inc'
-
-segment readable writeable
+include '../../fasm/TABLES.INC'
+include '../../fasm/MESSAGES.INC'
 
 align 4
 
-include '..\variable.inc'
+include '../../fasm/VARIABLE.INC'
 
 command_line dd ?
 memory_setting dd ?
