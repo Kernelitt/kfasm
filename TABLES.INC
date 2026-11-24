@@ -299,14 +299,6 @@ symbols_4:
  db 'r15d',10h,4Fh
  db 'r15l',10h,1Fh
  db 'r15w',10h,2Fh
- db 'tmm0',14h,70h
- db 'tmm1',14h,71h
- db 'tmm2',14h,72h
- db 'tmm3',14h,73h
- db 'tmm4',14h,74h
- db 'tmm5',14h,75h
- db 'tmm6',14h,76h
- db 'tmm7',14h,77h
  db 'word',11h,2
  db 'xmm0',10h,0C0h
  db 'xmm1',10h,0C1h
@@ -713,8 +705,6 @@ instructions_4:
  dw simple_instruction_0f_01-instruction_handler
  db 'clts',6
  dw simple_extended_instruction-instruction_handler
- db 'clui',0EEh
- dw simple_instruction_f3_0f_01_64bit-instruction_handler
  db 'clwb',6
  dw clflushopt_instruction-instruction_handler
  db 'cmps',0A6h
@@ -929,8 +919,6 @@ instructions_4:
  dw simple_instruction_0f_01-instruction_handler
  db 'stos',0AAh
  dw stos_instruction-instruction_handler
- db 'stui',0EFh
- dw simple_instruction_f3_0f_01_64bit-instruction_handler
  db 'test',0
  dw test_instruction-instruction_handler
  db 'verr',4
@@ -1030,10 +1018,6 @@ instructions_5:
  dw sse_sd_instruction-instruction_handler
  db 'divss',5Eh
  dw sse_ss_instruction-instruction_handler
- db 'encls',0CFh
- dw simple_instruction_0f_01-instruction_handler
- db 'enclu',0D7h
- dw simple_instruction_0f_01-instruction_handler
  db 'enter',0
  dw enter_instruction-instruction_handler
  db 'entry',0
@@ -1420,8 +1404,6 @@ instructions_5:
  dw popcnt_instruction-instruction_handler
  db 'tzmsk',14h
  dw tbm_instruction-instruction_handler
- db 'uiret',0ECh
- dw simple_instruction_f3_0f_01_64bit-instruction_handler
  db 'vdppd',41h
  dw avx_128bit_instruction_3a_imm8_noevex-instruction_handler
  db 'vdpps',40h
@@ -1525,8 +1507,6 @@ instructions_6:
  dw comisd_instruction-instruction_handler
  db 'comiss',2Fh
  dw comiss_instruction-instruction_handler
- db 'enqcmd',0F2h
- dw enqcmd_instruction-instruction_handler
  db 'fcmovb',0C0h
  dw fcmov_instruction-instruction_handler
  db 'fcmove',0C8h
@@ -1605,8 +1585,6 @@ instructions_6:
  dw sse_pd_instruction-instruction_handler
  db 'haddps',07Ch
  dw cvtpd2dq_instruction-instruction_handler
- db 'hreset',0
- dw hreset_instruction-instruction_handler
  db 'hsubpd',07Dh
  dw sse_pd_instruction-instruction_handler
  db 'hsubps',07Dh
@@ -1847,8 +1825,6 @@ instructions_6:
  dw simple_extended_instruction-instruction_handler
  db 't1mskc',17h
  dw tbm_instruction-instruction_handler
- db 'testui',0EDh
- dw simple_instruction_f3_0f_01_64bit-instruction_handler
  db 'tpause',66h
  dw tpause_instruction-instruction_handler
  db 'umwait',0F2h
@@ -2132,8 +2108,6 @@ instructions_7:
  dw endbr_instruction-instruction_handler
  db 'endbr64',0FAh
  dw endbr_instruction-instruction_handler
- db 'enqcmds',0F3h
- dw enqcmd_instruction-instruction_handler
  db 'fcmovbe',0D0h
  dw fcmov_instruction-instruction_handler
  db 'fcmovnb',0C0h
@@ -2320,14 +2294,6 @@ instructions_7:
  dw simple_extended_instruction-instruction_handler
  db 'sysretq',07h
  dw simple_extended_instruction_64bit-instruction_handler
- db 'tdpbssd',0F2h
- dw amx_int8_instruction-instruction_handler
- db 'tdpbsud',0F3h
- dw amx_int8_instruction-instruction_handler
- db 'tdpbusd',66h
- dw amx_int8_instruction-instruction_handler
- db 'tdpbuud',0
- dw amx_int8_instruction-instruction_handler
  db 'tlbsync',0FFh
  dw simple_instruction_0f_01-instruction_handler
  db 'ucomisd',2Eh
@@ -2771,8 +2737,6 @@ instructions_8:
  dw rdfsbase_instruction-instruction_handler
  db 'rstorssp',5
  dw rstorssp_instruction-instruction_handler
- db 'senduipi',6
- dw senduipi_instruction-instruction_handler
  db 'setssbsy',0E8h
  dw setssbsy_instruction-instruction_handler
  db 'sha1msg1',0C9h
@@ -2783,8 +2747,6 @@ instructions_8:
  dw simple_extended_instruction-instruction_handler
  db 'sysexitq',35h
  dw simple_extended_instruction_64bit-instruction_handler
- db 'tilezero',0
- dw tilezero_instruction-instruction_handler
  db 'umonitor',0
  dw umonitor_instruction-instruction_handler
  db 'unpckhpd',15h
@@ -3164,8 +3126,6 @@ instructions_9:
  dw fxsave_instruction_64bit-instruction_handler
  db 'gf2p8mulb',0CFh
  dw sse4_instruction_66_38-instruction_handler
- db 'ldtilecfg',0
- dw ldtilecfg_instruction-instruction_handler
  db 'movdir64b',0F8h
  dw movdir64b_instruction-instruction_handler
  db 'pclmulqdq',-1
@@ -3200,18 +3160,10 @@ instructions_9:
  dw simple_instruction_f3_0f_01-instruction_handler
  db 'rmpupdate',0FEh
  dw simple_instruction_f2_0f_01-instruction_handler
- db 'serialize',0E8h
- dw simple_instruction_0f_01-instruction_handler
  db 'sha1nexte',0C8h
  dw sse4_instruction_38-instruction_handler
  db 'sha1rnds4',0CCh
  dw sse4_instruction_3a_imm8-instruction_handler
- db 'sttilecfg',66h
- dw ldtilecfg_instruction-instruction_handler
- db 'tdpbf16ps',0F3h
- dw amx_bf16_instruction-instruction_handler
- db 'tileloadd',0F2h
- dw tileloadd_instruction-instruction_handler
  db 'useavx256',0
  dw set_evex_mode-instruction_handler
  db 'useavx512',1
@@ -3592,12 +3544,8 @@ instructions_9:
  dw avx_pd_instruction-instruction_handler
  db 'vunpcklps',14h
  dw avx_ps_instruction-instruction_handler
- db 'xresldtrk',0E9h
- dw simple_instruction_f2_0f_01-instruction_handler
  db 'xrstors64',3
  dw xsaves_instruction_64bit-instruction_handler
- db 'xsusldtrk',0E8h
- dw simple_instruction_f2_0f_01-instruction_handler
 instructions_10:
  db 'aesdeclast',0DFh
  dw sse4_instruction_66_38-instruction_handler
@@ -3637,8 +3585,6 @@ instructions_10:
  dw sse4_instruction_38-instruction_handler
  db 'sha256msg2',0CDh
  dw sse4_instruction_38-instruction_handler
- db 'tilestored',0F3h
- dw tilestored_instruction-instruction_handler
  db 'vcmptruepd',0Fh
  dw avx_cmp_pd_instruction-instruction_handler
  db 'vcmptrueps',0Fh
@@ -3852,10 +3798,6 @@ instructions_11:
  dw setssbsy_instruction-instruction_handler
  db 'sha256rnds2',0CBh
  dw sse4_instruction_38_xmm0-instruction_handler
- db 'tileloaddt1',66h
- dw tileloadd_instruction-instruction_handler
- db 'tilerelease',0
- dw tilerelease_instruction-instruction_handler
  db 'vaesdeclast',0DFh
  dw avx_instruction_38_nomask-instruction_handler
  db 'vaesenclast',0DDh
